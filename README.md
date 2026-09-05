@@ -19,8 +19,8 @@ In particular, the work showed that:
 - Biscuit provides portable capability authority, offline verification and monotonic attenuation;
 - standards-shaped delegated authorization can reproduce parent-to-child authority without a custom Project Mandate token;
 - request/workload binding, status, aggregate state, approval and audit can be composed around those mechanisms;
-- independently implemented verifiers can interpret the same authority semantics consistently;
-- a black-box conformance suite produced the expected results across independent .NET implementations and a separately written Python implementation.
+- separately implemented verifiers can interpret the same authority semantics consistently;
+- a black-box conformance suite produced the expected results across two .NET verifier implementations and a separately written Python implementation.
 
 The project is therefore published as a **research record and architecture case study**, not as a claim of a new authorization standard or active commercial product.
 
@@ -30,19 +30,50 @@ Company A authorises an autonomous travel/procurement agent to act within a boun
 
 Example constraints include business travel only, rail and hotels only, a per-transaction ceiling, an aggregate allowance, a jurisdiction restriction, a human-approval threshold, expiry and restricted redelegation.
 
-## What is in this repository
+## Public snapshot
 
-The public snapshot is intended to preserve the technical research:
+This repository is a **curated public edition**, not a mirror of the original private working repository and not a complete dump of the prototype source tree.
 
-- architecture and domain modelling;
-- standards comparisons;
-- Biscuit and delegated-authorization experiments;
-- verifier implementations;
-- security and interoperability tests;
-- the provisional authority profile and conformance vectors;
-- the final kill decision.
+It contains the material needed to understand the investigation and reproduce the published containment-conformance experiment:
 
-Private commercial-discovery notes and working-history material are intentionally excluded.
+- selected architecture and decision records;
+- selected Biscuit and delegated-authorization experiment results;
+- the provisional authority profile;
+- the JSON Schema and 14 containment vectors;
+- a standalone .NET black-box conformance runner;
+- an independently written Python reference verifier;
+- the final commercial kill decision.
+
+Private customer-discovery material, personal/contact information, working-history material, generated development keys and nonessential prototype source are intentionally excluded. See [`PUBLICATION_NOTES.md`](PUBLICATION_NOTES.md).
+
+## Start here
+
+- [`docs/RESEARCH_SUMMARY.md`](docs/RESEARCH_SUMMARY.md) - short chronology and conclusions
+- [`docs/PROJECT_CHARTER.md`](docs/PROJECT_CHARTER.md) - original hypothesis, null hypothesis and kill criteria
+- [`docs/architecture/TECHNICAL_ARCHITECTURE.md`](docs/architecture/TECHNICAL_ARCHITECTURE.md) - logical architecture and trust boundaries
+- [`docs/adr/0001-use-existing-standards-first.md`](docs/adr/0001-use-existing-standards-first.md) - standards-first decision
+- [`docs/adr/0003-profile-oauth-delegated-authorization-before-new-protocol.md`](docs/adr/0003-profile-oauth-delegated-authorization-before-new-protocol.md) - why a new token format was rejected
+- [`docs/adr/0004-reject-commercial-product-thesis.md`](docs/adr/0004-reject-commercial-product-thesis.md) - final product kill decision
+- [`docs/profile/PROJECT_MANDATE_AUTHORITY_PROFILE_V0_1.md`](docs/profile/PROJECT_MANDATE_AUTHORITY_PROFILE_V0_1.md) - provisional profile semantics
+- [`conformance/README.md`](conformance/README.md) - black-box conformance contract and vectors
+
+## Reproduce the public conformance experiment
+
+The public snapshot includes a small Python verifier that independently implements the documented v0.1 containment semantics and a .NET runner that treats it as a black box.
+
+Start the Python verifier:
+
+```powershell
+python interop/python-verifier/server.py
+```
+
+Then, from the repository root:
+
+```powershell
+dotnet run --project src/Mandate.Conformance/Mandate.Conformance.csproj -- --target python=http://127.0.0.1:34004
+```
+
+A successful run matches all **14/14** published containment vectors. The GitHub Actions workflow runs this same cross-language test.
 
 ## Research outcome
 
@@ -50,17 +81,17 @@ Project Mandate was deliberately run as a falsification exercise. The progressio
 
 1. test whether a new blockchain or cryptographic rail was required;
 2. test existing credential and capability approaches;
-3. compare Biscuit and standards-shaped delegation;
-4. build independent verifiers and conformance tests;
-5. determine whether a material technical or commercial gap remained.
+3. demonstrate that Biscuit already supplies the central portable-capability and attenuation mechanics;
+4. reproduce parent-to-child delegation using standards-shaped OAuth Delegated Authorization;
+5. test shared authority semantics across separately implemented verifiers;
+6. build black-box conformance vectors and a second-language implementation;
+7. determine whether a material technical or commercial gap remained.
 
 The answer to the final question was **no on current evidence**. The research was therefore closed rather than extended into a product simply because the prototype worked.
 
-See `docs/adr/0004-reject-commercial-product-thesis.md` for the formal decision.
-
 ## Runtime
 
-The prototype uses .NET 10. Some Biscuit experiments invoke the official Eclipse Biscuit CLI as an external process. The Python conformance implementation uses only the Python standard library.
+The public conformance runner targets .NET 10. The Python conformance implementation uses only the Python standard library. The private research prototype also used the official Eclipse Biscuit CLI for some experiments; the selected results are retained in the documentation here.
 
 ## License
 
