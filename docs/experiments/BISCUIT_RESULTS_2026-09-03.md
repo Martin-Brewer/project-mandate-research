@@ -1,10 +1,10 @@
-# Biscuit attenuation spike results
+# Eclipse Biscuit attenuation spike results
 
 _Date: 2026-09-03_
 
 ## Result
 
-The isolated Biscuit CLI spike completed successfully on Windows using the official Biscuit CLI 0.6.0.
+The isolated [Eclipse Biscuit](https://github.com/eclipse-biscuit/biscuit) CLI spike completed successfully on Windows using the official Biscuit CLI 0.6.0.
 
 All expected scenarios behaved correctly:
 
@@ -31,7 +31,7 @@ These are initial prototype measurements only. They are useful as a baseline for
 
 ## What the successful run demonstrates
 
-The experiment provides executable evidence that Biscuit can represent the static portion of the Project Mandate candidate model with native monotonic attenuation:
+The experiment provides executable evidence that Eclipse Biscuit can represent the static portion of the Project Mandate candidate model with native monotonic attenuation:
 
 1. Company A creates the root authority once.
 2. A holder can append narrower workload constraints without Company A re-signing a child mandate.
@@ -57,4 +57,6 @@ It also does not show that Biscuit is commercially or operationally better than 
 
 ## Research implication
 
-This result became one of the key falsification points for Project Mandate. Biscuit already supplied the central portable-capability and monotonic-attenuation behaviour that the project initially considered potentially novel.
+This result became one of the key falsification points for Project Mandate. Eclipse Biscuit already supplied the central portable-capability and monotonic-attenuation behaviour that the project initially considered potentially novel.
+
+For the Biscuit-specific case-study interpretation, see [`../ECLIPSE_BISCUIT_CASE_STUDY.md`](../ECLIPSE_BISCUIT_CASE_STUDY.md).
