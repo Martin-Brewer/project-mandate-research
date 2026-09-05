@@ -1,0 +1,83 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://project-mandate.example/conformance/v0.1/project-mandate-authority.schema.json",
+  "title": "Project Mandate Authority Profile v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "type",
+    "actions",
+    "resources",
+    "purpose",
+    "jurisdictions",
+    "per_transaction_limit",
+    "human_approval_above",
+    "authority_state"
+  ],
+  "properties": {
+    "type": {
+      "const": "project_mandate_authority"
+    },
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "resources": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "purpose": {
+      "type": "string",
+      "minLength": 1
+    },
+    "jurisdictions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "per_transaction_limit": {
+      "$ref": "#/$defs/moneyConstraint"
+    },
+    "human_approval_above": {
+      "$ref": "#/$defs/moneyConstraint"
+    },
+    "authority_state": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "moneyConstraint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "currency",
+        "amount"
+      ],
+      "properties": {
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}
