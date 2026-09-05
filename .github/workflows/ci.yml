@@ -1,0 +1,53 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  conformance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 10
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Build conformance runner
+        run: dotnet build src/Mandate.Conformance/Mandate.Conformance.csproj --configuration Release
+
+      - name: Start independent Python verifier
+        shell: bash
+        run: |
+          python interop/python-verifier/server.py --host 127.0.0.1 --port 34004 > /tmp/mandate-python.log 2>&1 &
+          echo $! > /tmp/mandate-python.pid
+          for attempt in {1..20}; do
+            if curl --fail --silent http://127.0.0.1:34004/health > /dev/null; then
+              exit 0
+            fi
+            sleep 0.5
+          done
+          cat /tmp/mandate-python.log
+          exit 1
+
+      - name: Run black-box conformance
+        run: >-
+          dotnet run --project src/Mandate.Conformance/Mandate.Conformance.csproj
+          --configuration Release --no-build --
+          --target python=http://127.0.0.1:34004
+
+      - name: Stop Python verifier
+        if: always()
+        shell: bash
+        run: |
+          if [ -f /tmp/mandate-python.pid ]; then
+            kill "$(cat /tmp/mandate-python.pid)" || true
+          fi
