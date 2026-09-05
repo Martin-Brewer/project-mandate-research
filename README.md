@@ -6,6 +6,26 @@ Project Mandate was a falsification-led research prototype exploring **Verifiabl
 
 The reference question was simple: can an unrelated verifier determine what an agent is authorised to do on behalf of an organisation, under explicit constraints, without requiring a bespoke integration back into that organisation's IAM platform?
 
+## Eclipse Biscuit case study
+
+A central part of this research evaluated **[Eclipse Biscuit](https://github.com/eclipse-biscuit/biscuit)** as a capability mechanism for delegated AI-agent authority.
+
+The Biscuit experiments confirmed the properties that ultimately undermined the original Project Mandate product thesis:
+
+- decentralized/offline verification from public information;
+- holder-side offline delegation through attenuation;
+- monotonic restriction of authority rather than holder-side broadening;
+- capability-oriented authorization that can be evaluated against request context;
+- flexible Datalog checks that remain effective as later attenuation blocks are appended.
+
+In the reference experiment, Company A created root authority once, a holder attenuated it to a workload, the agent attenuated it again to a specific verifier/request, and hostile attempts to broaden monetary scope, resource scope, workload binding or audience were denied.
+
+That result is documented in [`docs/experiments/BISCUIT_RESULTS_2026-09-03.md`](docs/experiments/BISCUIT_RESULTS_2026-09-03.md) and summarised in [`docs/ECLIPSE_BISCUIT_CASE_STUDY.md`](docs/ECLIPSE_BISCUIT_CASE_STUDY.md).
+
+The important conclusion is intentionally negative: **the research did not discover a missing authorization primitive beyond what Biscuit and existing delegated-authorization work already provide.** Biscuit therefore served not merely as an implementation choice, but as one of the mechanisms that falsified the need for a proprietary Project Mandate authorization technology.
+
+Keywords: Eclipse Biscuit, Biscuit authorization token, capability security, offline delegation, monotonic attenuation, Datalog authorization, delegated authorization, AI agent security, agentic authorization.
+
 ## Final conclusion
 
 The prototype demonstrated that the scenario is technically achievable, but it did **not** identify a sufficiently differentiated or defensible product.
@@ -16,7 +36,7 @@ The most important result was negative:
 
 In particular, the work showed that:
 
-- Biscuit provides portable capability authority, offline verification and monotonic attenuation;
+- Eclipse Biscuit provides portable capability authority, offline verification and monotonic attenuation;
 - standards-shaped delegated authorization can reproduce parent-to-child authority without a custom Project Mandate token;
 - request/workload binding, status, aggregate state, approval and audit can be composed around those mechanisms;
 - separately implemented verifiers can interpret the same authority semantics consistently;
@@ -48,6 +68,7 @@ Private customer-discovery material, personal/contact information, working-histo
 
 ## Start here
 
+- [`docs/ECLIPSE_BISCUIT_CASE_STUDY.md`](docs/ECLIPSE_BISCUIT_CASE_STUDY.md) - Biscuit-specific use-case report and conclusions
 - [`docs/RESEARCH_SUMMARY.md`](docs/RESEARCH_SUMMARY.md) - short chronology and conclusions
 - [`docs/PROJECT_CHARTER.md`](docs/PROJECT_CHARTER.md) - original hypothesis, null hypothesis and kill criteria
 - [`docs/architecture/TECHNICAL_ARCHITECTURE.md`](docs/architecture/TECHNICAL_ARCHITECTURE.md) - logical architecture and trust boundaries
@@ -81,7 +102,7 @@ Project Mandate was deliberately run as a falsification exercise. The progressio
 
 1. test whether a new blockchain or cryptographic rail was required;
 2. test existing credential and capability approaches;
-3. demonstrate that Biscuit already supplies the central portable-capability and attenuation mechanics;
+3. demonstrate that Eclipse Biscuit already supplies the central portable-capability and attenuation mechanics;
 4. reproduce parent-to-child delegation using standards-shaped OAuth Delegated Authorization;
 5. test shared authority semantics across separately implemented verifiers;
 6. build black-box conformance vectors and a second-language implementation;
