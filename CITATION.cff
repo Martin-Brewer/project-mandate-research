@@ -1,0 +1,27 @@
+cff-version: 1.2.0
+message: "If you reference this research, please cite the repository and research summary."
+title: "Project Mandate Research"
+type: software
+authors:
+  - name: "DirkDiggler147"
+repository-code: "https://github.com/DirkDiggler147/project-mandate-research"
+url: "https://github.com/DirkDiggler147/project-mandate-research"
+date-released: 2026-09-05
+abstract: >-
+  Falsification-led research into portable delegated authority for AI agents
+  acting across organisational boundaries. The project evaluated Eclipse
+  Biscuit, standards-shaped OAuth delegated authorization, independent
+  verifier implementations and black-box conformance testing, and concluded
+  that existing mechanisms already provide the core authorization primitive.
+keywords:
+  - "Eclipse Biscuit"
+  - "Biscuit authorization token"
+  - "capability security"
+  - "offline delegation"
+  - "monotonic attenuation"
+  - "Datalog authorization"
+  - "delegated authorization"
+  - "AI agents"
+  - "agent security"
+  - "OAuth"
+  - "authorization research"
