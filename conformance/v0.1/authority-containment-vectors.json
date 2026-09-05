@@ -1,0 +1,343 @@
+{
+  "profile": "project_mandate_authority",
+  "version": "0.1",
+  "description": "Semantic parent-to-child containment vectors. Conformance is ALLOW/DENY; implementation-specific diagnostic strings are non-normative in v0.1.",
+  "cases": [
+    {
+      "name": "exact_match_allowed",
+      "expectedAllowed": true,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["book", "purchase"],
+        "resources": ["hotel", "rail"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["book", "purchase"],
+        "resources": ["hotel", "rail"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "multi_dimension_narrowing_allowed",
+      "expectedAllowed": true,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["book", "purchase"],
+        "resources": ["hotel", "rail"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK", "IE"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 600 },
+        "human_approval_above": { "currency": "GBP", "amount": 400 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "lower_transaction_limit_allowed",
+      "expectedAllowed": true,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 1 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "lower_approval_threshold_allowed",
+      "expectedAllowed": true,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 250 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "action_broadening_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase", "refund"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "resource_broadening_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel", "rail"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "purpose_change_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "personal-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "jurisdiction_broadening_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK", "FR"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "transaction_amount_broadening_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 900 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "transaction_currency_change_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "EUR", "amount": 1 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "approval_threshold_broadening_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 600 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "approval_currency_change_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "EUR", "amount": 1 },
+        "authority_state": "da:state-1"
+      }
+    },
+    {
+      "name": "authority_state_substitution_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-2"
+      }
+    },
+    {
+      "name": "type_change_denied",
+      "expectedAllowed": false,
+      "parent": {
+        "type": "project_mandate_authority",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      },
+      "child": {
+        "type": "other_authority_type",
+        "actions": ["purchase"],
+        "resources": ["hotel"],
+        "purpose": "business-travel",
+        "jurisdictions": ["UK"],
+        "per_transaction_limit": { "currency": "GBP", "amount": 800 },
+        "human_approval_above": { "currency": "GBP", "amount": 500 },
+        "authority_state": "da:state-1"
+      }
+    }
+  ]
+}
